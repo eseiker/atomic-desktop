@@ -31,6 +31,20 @@ elif [[ "${VARIANT}" == "kde" ]]; then
 
     systemctl enable sddm
 
+elif [[ "${VARIANT}" == "cosmic" ]]; then
+    # workaround: cosmic-greeter requires fprintd-pam but for aarch64 it's only in devel repo
+    if [[ "${TARGETARCH}" == "arm64" && ! $(dnf repoinfo devel -q | grep enabled) ]]; then
+        dnf install -y almalinux-release-devel
+        dnf config-manager --set-disabled devel
+        dnf install -y fprintd-pam --enablerepo=devel
+    fi
+
+    dnf copr enable -y "ligenix/enterprise-cosmic" "rhel+epel-10-$(uname -m)"
+    dnf install -y \
+        cosmic-desktop
+
+    systemctl enable cosmic-greeter
+
 else
     true
 
