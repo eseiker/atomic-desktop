@@ -93,7 +93,7 @@ jobs:
       containerfile: ${{ inputs.containerfile }}
       image-name: ${{ inputs.image_name }}
       previous-image: ${{ inputs.previous_image }}
-      upstream-public-key: almalinux-bootc.pub
+      upstream-public-key: almalinux-asahi-atomic.pub
       variant: ${{ inputs.variant }}
       platforms: ${{ inputs.platforms }}
       skip-maximize-build-space: false
