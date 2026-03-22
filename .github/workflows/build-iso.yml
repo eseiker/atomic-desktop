@@ -11,6 +11,7 @@ on:
         options:
           - 'gnome'
           - 'kde'
+          - 'cosmic'
           - 'ALL'
 
 concurrency:

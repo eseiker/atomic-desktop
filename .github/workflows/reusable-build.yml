@@ -93,7 +93,7 @@ jobs:
       containerfile: ${{ inputs.containerfile }}
       image-name: ${{ inputs.image_name }}
       previous-image: ${{ inputs.previous_image }}
-      upstream-public-key: almalinux-bootc.pub
+      upstream-public-key: almalinux-asahi-atomic.pub
       variant: ${{ inputs.variant }}
       platforms: ${{ inputs.platforms }}
       skip-maximize-build-space: false
@@ -103,11 +103,13 @@ jobs:
       image-description: "AlmaLinux Atomic Desktop - ${{ inputs.variant }}"
       changelog-snippet: |
         Major Components:
-            - Kernel: <relver:kernel>
+            - Kernel: <relver:kernel-16k>
             - Systemd: <relver:systemd>
             - Glibc: <relver:glibc>
             - Bootc: <relver:bootc>
-            - ${{ inputs.variant == 'gnome' && 'GNOME: <version:gdm>' || 'KDE: <version:plasma-desktop>' }}
+            - ${{ inputs.variant == 'gnome' && 'GNOME: <relver:gdm>'
+                || inputs.variant == 'kde' && 'KDE: <relver:plasma-desktop>'
+                || inputs.variant == 'cosmic' && 'COSMIC: <relver:cosmic-epoch>' }}
       KMS_KEY_ALIAS: ${{ inputs.KMS_KEY_ALIAS }}
       AWS_REGION: ${{ inputs.AWS_REGION }}
       generate-sbom: true
@@ -124,7 +126,7 @@ jobs:
     name: Test image
     needs: [check-update, build-image]
     if: ${{ !failure() && !cancelled() && needs.build-image.result == 'success' && (github.event_name != 'schedule' || needs.check-update.outputs.res != 0) }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     env:
       IMAGE_REF: "${{ needs.build-image.outputs.image-ref }}@${{ needs.build-image.outputs.digest }}"
     steps:

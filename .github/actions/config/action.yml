@@ -1,5 +1,6 @@
 ---
 name: Set Environment Variables
+description: Set Environment Variables
 
 inputs:
   VARIANT:
@@ -52,12 +53,12 @@ runs:
           echo "LATEST_TAG=latest" >> $GITHUB_OUTPUT
         fi
 
-        REGISTRY=quay.io
-        REGISTRY_USER="almalinuxorg+airibarr_bot"
-        IMAGE_PATH="almalinuxorg"
-        IMAGE_NAME="atomic-desktop"
-        PLATFORMS="arm64,amd64,amd64/v2"
-        VARIANTS="gnome,kde"
+        REGISTRY=ghcr.io
+        REGISTRY_USER=${{ github.actor }}
+        IMAGE_PATH=${{ github.repository_owner }}
+        IMAGE_NAME=${{ github.event.repository.name }}
+        PLATFORMS="arm64"
+        VARIANTS="gnome,kde,cosmic"
 
         echo "REGISTRY=${REGISTRY}" >> $GITHUB_OUTPUT
         echo "REGISTRY_USER=${REGISTRY_USER}" >> $GITHUB_OUTPUT
@@ -73,4 +74,13 @@ runs:
           echo "MATRIX={\"variant\": [\"${{ inputs.VARIANT }}\"]}" >> $GITHUB_OUTPUT
         fi
 
-        echo "IS_SIGNED=true" >> $GITHUB_OUTPUT
+        # This is a workaround so that the expansion of SIGNING_SECRET doesn't break the if statement
+        SECRET=$(cat <<EOF
+        ${{ inputs.SIGNING_SECRET }}
+        EOF
+        )
+        if [ -z "${SECRET}" ]; then
+          echo "IS_SIGNED=false" >> $GITHUB_OUTPUT
+        else
+          echo "IS_SIGNED=true" >> $GITHUB_OUTPUT
+        fi
