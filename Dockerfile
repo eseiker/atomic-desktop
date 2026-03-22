@@ -7,7 +7,7 @@ COPY files/scripts /build_files/
 COPY *.pub /keys/
 
 # Base Image
-FROM ghcr.io/eseiker/almalinux-asahi-atomic:10@sha256:fad7d0177b595b03d9ec3dccdf170f50636d03e256f28945788cbd02c4a844a3
+FROM ghcr.io/eseiker/almalinux-asahi-atomic:10@sha256:8f07c1e91155bdbbdc2794066eefdd7cbff8fa7523249787e5395d5d84a80204 
 
 ARG IMAGE_NAME
 ARG IMAGE_REGISTRY
