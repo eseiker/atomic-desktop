@@ -2,20 +2,23 @@
 
 set -xeuo pipefail
 
+dnf install -y \
+    @core \
+    @fonts \
+    @guest-desktop-agents \
+    @hardware-support \
+    @input-methods \
+    @multimedia \
+    @networkmanager-submodules \
+    @print-client \
+    @standard
+
 if [[ "${VARIANT}" == "gnome" ]]; then
     # aarch64 doesn't have @workstation group
     if [[ "${TARGETARCH}" == "arm64" ]]; then
         dnf install -y \
-            @core \
-            @fonts \
             @gnome-desktop \
-            @guest-desktop-agents \
-            @hardware-support \
             @internet-browser \
-            @multimedia \
-            @networkmanager-submodules \
-            @print-client \
-            @standard \
             @workstation-product
     else
         dnf install -y \
