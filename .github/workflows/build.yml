@@ -41,6 +41,7 @@ jobs:
         id: set
         with:
           VARIANT: "ALL"
+          SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
 
   build-test-promote:
     name: Build, Test, Promote
