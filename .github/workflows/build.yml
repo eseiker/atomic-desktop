@@ -64,6 +64,7 @@ jobs:
       registry_user: ${{ needs.set-env.outputs.REGISTRY_USER }}
     secrets:
       REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
     permissions:
       contents: read
       packages: write
